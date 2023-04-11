@@ -1,0 +1,19 @@
+body {
+    line-height: max(1.6em, 1em + 1ex);
+    color: var(--black);
+    font-family: system-ui, sans-serif;
+}
+
+body> :is(header, main, footer) {
+    padding-inline: max((100% - 1200px) / 2, 1rem);
+}
+
+[data-icon] {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-top: -3.25rem;
+    padding: 0.5rem;
+    border-radius: 1e5px;
+    background: var(--cta-bg);
+    color: #fff;
+}
