@@ -8,7 +8,7 @@
 - `Hero.astro`
 - `CardSection.astro`
 - `Card.astro`
-- `Button.astro` (<a>)
+- `Button.astro` (&lt;a&gt;)
 - `Footer.astro`
 
 3. Importer de nye components i `index.astro` og brug dem i stedet for de tilsvarende HTML-elementer.
