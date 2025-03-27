@@ -1,8 +1,5 @@
 ---
-import "../styles/global.css";
-import Header from "../components/Header.astro";
-import Hero from "../components/Hero.astro";
-import Footer from "../components/Footer.astro";
+import Layout from "../layout/layout.astro";
 import Card from "../components/Card.astro";
 
 // Hent alle produkter
@@ -25,21 +22,8 @@ const fashionUrl = `https://kea-alt-del.dk/t7/api/products/${productId}`;
 const data = await fetch(fashionUrl).then((res) => res.json());
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <title>{data.productdisplayname}</title>
-  </head>
-  <body>
-    <Header />
-    <main>
-      <Hero />
-      <div class="produktliste">
-        <Card product={data} />
-      </div>
-    </main>
-    <Footer />
-  </body>
-</html>
+<Layout titel={data.productdisplayname}>
+  <div class="produktinfo produktkort normal">
+    <Card data={data} />
+  </div>
+</Layout>

@@ -5,23 +5,23 @@ const { data } = Astro.props;
 ---
 
 <img
-  src="https://kea-alt-del.dk/t7/images/webp/640/${produktId}.webp"
+  src={`https://kea-alt-del.dk/t7/images/webp/640/${data.id}.webp`}
   alt="Produktfoto"
 />
 <div class="produktdesc">
   <div>
     <p>Nike | <span>Color: {data.basecolour} </span></p>
-    <h3>${data.productdisplayname}</h3>
-    <div class="produktdescgreen">${data.styledesc}</div>
+    <h3>{data.productdisplayname}</h3>
+    <div class="produktdescgreen" set:html={data.styledesc} />
   </div>
   <div class="produktdesccta">
-    <p class="bold" class="nulldiscount">${data.price} kr</p>
+    <p class="bold" class="nulldiscount">{data.price} kr</p>
     <div class="discounted">
       <p class="sale bold"></p>
       <p>
         <span style="font-size: 12px"
           >Before: <span style="text-decoration: line-through"
-            >${data.price} kr</span
+            >{data.price} kr</span
           ></span
         >
         <span class="sale rabatProcent_1163" style="font-size: 12px"></span>
@@ -39,6 +39,6 @@ const { data } = Astro.props;
   </div>
   <div class="produktdesc1">
     <p>Description</p>
-    <p>${data.description}</p>
+    <p set:html={data.description} />
   </div>
 </div>
