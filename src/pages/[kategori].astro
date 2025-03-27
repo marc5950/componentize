@@ -1,9 +1,8 @@
 ---
 import Layout from "../layout/layout.astro";
-import CardSection from "../components/Card.astro";
+import CardSection from "../components/CardSection.astro";
 
 export async function getStaticPaths() {
-  // Hent kategorier fra API'et
   const categoriesUrl = "https://kea-alt-del.dk/t7/api/categories";
   const subcategoriesUrl = "https://kea-alt-del.dk/t7/api/subcategories";
   const seasonsUrl = "https://kea-alt-del.dk/t7/api/seasons";
@@ -14,50 +13,41 @@ export async function getStaticPaths() {
     fetch(seasonsUrl).then((res) => res.json()),
   ]);
 
-  // Opret stier for hver kategori, underkategori og sæson
   const categoryPaths = categories.map((category) => ({
     params: {
-      menu: "Categories",
       kategori: category.category,
     },
   }));
 
   const subcategoryPaths = subcategories.map((subcategory) => ({
     params: {
-      menu: "Subcategories",
       kategori: subcategory.subcategory,
     },
   }));
 
   const seasonPaths = seasons.map((season) => ({
     params: {
-      menu: "Seasons",
       kategori: season.season,
     },
   }));
 
-  // Kombiner alle stier
   return [...categoryPaths, ...subcategoryPaths, ...seasonPaths];
 }
 
-// Hent den specifikke produktId fra ruten
 const { kategori } = Astro.params;
-const { menu } = Astro.params;
+const menu = Astro.url.searchParams.get("menu") || "Categories";
 
-function prodkat(menu) {
-  if (menu === "Categories") {
-    return "category";
-  } else if (menu === "Subcategories") {
-    return "subcategory";
-  } else if (menu === "Seasons") {
-    return "season";
-  } else {
-    return "category"; // Hvis ingen match findes
-  }
+function prodkat(menu: string) {
+  const menuMap = {
+    Categories: "category",
+    Subcategories: "subcategory",
+    Seasons: "season",
+  };
+  return menuMap[menu] || "category";
 }
+
 const prodKat = prodkat(menu);
 
-// Hent det specifikke produkts data
 const fashionUrl = `https://kea-alt-del.dk/t7/api/products?limit=100&${prodKat}=${kategori}`;
 const data = await fetch(fashionUrl).then((res) => res.json());
 ---
