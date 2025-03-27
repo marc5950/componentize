@@ -1,0 +1,16 @@
+---
+import Card from "../components/Card.astro";
+
+// Hent produktId fra URL'en (Astro håndterer det)
+const { productId } = Astro.params;
+
+// Hent data fra API'et
+const fashionUrl = `https://kea-alt-del.dk/t7/api/products/${productId}`;
+const data = await fetch(fashionUrl).then((res) => res.json());
+
+console.log(data);
+---
+
+<div class="produktliste">
+  <Card {data} />
+</div>

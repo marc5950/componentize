@@ -1,15 +1,16 @@
 ---
-// a) Flyt styles-mappen fra /public til /src
-// b) import "../styles/global.css";
-
-// Importer components her
 import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro";
-import CardSection from "../components/CardSection.astro";
 import Footer from "../components/Footer.astro";
-const fashionUrl = "https://kea-alt-del.dk/t7/api/products?limit=40";
+import Card from "../components/Card.astro";
+// Hent produktId fra URL'en (Astro håndterer det)
+const { productId } = Astro.params;
+
+// Hent data fra API'et
+const fashionUrl = `https://kea-alt-del.dk/t7/api/products/${productId}`;
 const data = await fetch(fashionUrl).then((res) => res.json());
+
 console.log(data);
 ---
 
@@ -28,13 +29,10 @@ console.log(data);
       <Hero />
 
       <!-- Indsæt CardSection her (som indeholder Cards) -->
-      <h1>Produktliste</h1>
-      <p>Her er en liste over produkter</p>
-      <div class="produktliste">
-        {data.map((product) => <CardSection {product} />)}
-      </div>
+      div class="produktliste">
+      <Card {data} />
     </main>
-    <!-- Indsæt Footer her -->
-    <Footer />
   </body>
+  <!-- Indsæt Footer her -->
+  <Footer />
 </html>
