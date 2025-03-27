@@ -1,7 +1,7 @@
 ---
 //@ts-nocheck
 import "../styles/global.css";
-const { product } = Astro.props;
+const { data } = Astro.props;
 ---
 
 <img
@@ -10,7 +10,7 @@ const { product } = Astro.props;
 />
 <div class="produktdesc">
   <div>
-    <p>Nike | <span>Color: ${data.basecolour} </span></p>
+    <p>Nike | <span>Color: {data.basecolour} </span></p>
     <h3>${data.productdisplayname}</h3>
     <div class="produktdescgreen">${data.styledesc}</div>
   </div>

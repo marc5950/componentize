@@ -4,14 +4,25 @@ import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro";
 import Footer from "../components/Footer.astro";
 import Card from "../components/Card.astro";
-// Hent produktId fra URL'en (Astro håndterer det)
+
+// Hent alle produkter
+export async function getStaticPaths() {
+  const fashionUrl = "https://kea-alt-del.dk/t7/api/products?limit=40";
+  const products = await fetch(fashionUrl).then((res) => res.json());
+
+  // Opret stier for hvert produkt
+  return products.map((product) => ({
+    params: { productId: product.id.toString() },
+    props: { productId: product.id.toString() },
+  }));
+}
+
+// Hent den specifikke produktId fra ruten
 const { productId } = Astro.params;
 
-// Hent data fra API'et
+// Hent det specifikke produkts data
 const fashionUrl = `https://kea-alt-del.dk/t7/api/products/${productId}`;
 const data = await fetch(fashionUrl).then((res) => res.json());
-
-console.log(data);
 ---
 
 <html lang="en">
@@ -19,20 +30,16 @@ console.log(data);
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
-    <title>Øvelse: Componentize</title>
+    <title>{data.productdisplayname}</title>
   </head>
   <body>
-    <!-- Insæt Header her -->
     <Header />
     <main>
-      <!-- Indsæt Hero her -->
       <Hero />
-
-      <!-- Indsæt CardSection her (som indeholder Cards) -->
-      div class="produktliste">
-      <Card {data} />
+      <div class="produktliste">
+        <Card product={data} />
+      </div>
     </main>
+    <Footer />
   </body>
-  <!-- Indsæt Footer her -->
-  <Footer />
 </html>
