@@ -1,0 +1,62 @@
+---
+// src/pages/listview/[filter]/[item].astro
+import Layout from "../../../layout/layout.astro";
+import {
+  getProductsByCategory,
+  getProductsBySubcategory,
+  getProductsBySeason,
+} from "../../../utils/api.js";
+import CardSection from "../../../components/CardSection.astro";
+
+// Hent parametre fra stien (ikke URL-query)
+const { filter, item } = Astro.params;
+
+let products = [];
+let title = item;
+
+// Hent produkter baseret på filter og item
+if (filter === "categories") {
+  products = await getProductsByCategory(item);
+} else if (filter === "subcategories") {
+  products = await getProductsBySubcategory(item);
+} else if (filter === "seasons") {
+  products = await getProductsBySeason(item);
+}
+
+const gender = Astro.url.searchParams.get("gender") || "All"; // Hent gender fra URL
+
+console.log("Filter:", filter); // f.eks. "categories"
+console.log("Item:", item); // f.eks. "Accessories"
+console.log("Gender:", gender);
+---
+
+<Layout titel={title}>
+  <h2>{title}</h2>
+  <div class="gender-picker">
+    <a
+      href={`?gender=All`}
+      class={`gender-btn ${gender === "All" ? "selected" : ""}`}>All</a
+    >
+    <a
+      href={`?gender=Women`}
+      class={`gender-btn ${gender === "Women" ? "selected" : ""}`}>Women</a
+    >
+    <a
+      href={`?gender=Men`}
+      class={`gender-btn ${gender === "Men" ? "selected" : ""}`}>Men</a
+    >
+    <a
+      href={`?gender=Unisex`}
+      class={`gender-btn ${gender === "Unisex" ? "selected" : ""}`}>Unisex</a
+    >
+  </div>
+
+  <!-- Filtrer produkterne baseret på gender -->
+  <div class="produktliste">
+    {
+      products
+        .filter((product) => gender === "All" || product.gender === gender)
+        .map((product) => <CardSection product={product} />)
+    }
+  </div>
+</Layout>

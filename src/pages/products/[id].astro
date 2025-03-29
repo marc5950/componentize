@@ -1,25 +1,13 @@
 ---
 import Layout from "../../layout/layout.astro";
 import Card from "../../components/Card.astro";
+import { getProductById } from "../../utils/api.js";
 
-// Hent alle produkter
-export async function getStaticPaths() {
-  const fashionUrl = "https://kea-alt-del.dk/t7/api/products?limit=40";
-  const products = await fetch(fashionUrl).then((res) => res.json());
+// Hent parametre fra stien (ikke URL-query)
+const { id } = Astro.params;
 
-  // Opret stier for hvert produkt
-  return products.map((product) => ({
-    params: { productId: product.id.toString() },
-    props: { productId: product.id.toString() },
-  }));
-}
-
-// Hent den specifikke produktId fra ruten
-const { productId } = Astro.params;
-
-// Hent det specifikke produkts data
-const fashionUrl = `https://kea-alt-del.dk/t7/api/products/${productId}`;
-const data = await fetch(fashionUrl).then((res) => res.json());
+// Hent produktdata baseret på id
+const data = await getProductById(id);
 ---
 
 <Layout titel={data.productdisplayname}>

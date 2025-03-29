@@ -14,7 +14,7 @@ let productSoldOut = product.soldout ? "soldOut" : "";
 ---
 
 <article class={`produktkort ${productSale} ${productSoldOut}`}>
-  <a href={`/product/${product.id}`}>
+  <a href={`/products/${product.id}`}>
     <img
       src={`https://kea-alt-del.dk/t7/images/webp/640/${product.id}.webp`}
       alt={`Billede af ${product.productdisplayname}`}
@@ -39,5 +39,5 @@ let productSoldOut = product.soldout ? "soldOut" : "";
       </div>
     )
   }
-  <a href={`/product/${product.id}`}>Read more</a>
+  <a href={`/products/${product.id}`}>Read more</a>
 </article>

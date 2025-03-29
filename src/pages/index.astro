@@ -12,7 +12,7 @@ const categories = await getCategories();
     <section class="kategorier">
       {
         categories.map((category) => (
-          <a href={`/listview?filter=categories&item=${category.category}`}>
+          <a href={`/listview/categories/${category.category}`}>
             {category.category}
           </a>
         ))

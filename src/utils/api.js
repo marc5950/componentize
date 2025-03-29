@@ -26,7 +26,9 @@ export async function getSeasons() {
 }
 
 export async function getProductsByCategory(category) {
-  const response = await fetch(`${API_URL}/products?category=${category}`);
+  const response = await fetch(
+    `${API_URL}/products?limit=1000&category=${category}`,
+  );
   if (!response.ok) {
     throw new Error(`Fejl ved hentning af produkter for kategori: ${category}`);
   }
@@ -35,7 +37,7 @@ export async function getProductsByCategory(category) {
 
 export async function getProductsBySubcategory(subcategory) {
   const response = await fetch(
-    `${API_URL}/products?subcategory=${subcategory}`,
+    `${API_URL}/products?limit=1000&subcategory=${subcategory}`,
   );
   if (!response.ok) {
     throw new Error(
@@ -46,7 +48,9 @@ export async function getProductsBySubcategory(subcategory) {
 }
 
 export async function getProductsBySeason(season) {
-  const response = await fetch(`${API_URL}/products?season=${season}`);
+  const response = await fetch(
+    `${API_URL}/productsproducts?limit=1000&season=${season}`,
+  );
   if (!response.ok) {
     throw new Error(`Fejl ved hentning af produkter for sæson: ${season}`);
   }

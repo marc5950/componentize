@@ -36,13 +36,12 @@ if (filter === "categories") {
     <h2>{title}</h2>
     <section class="kategorier">
       {
-        items.map((item) => (
-          <a
-            href={`/listview?filter=${filter}&item=${item.category || item.subcategory || item.season}`}
-          >
-            {item.category || item.subcategory || item.season}
-          </a>
-        ))
+        items.map((item) => {
+          // Find den aktuelle værdi (category, subcategory eller season)
+          const itemValue = item.category || item.subcategory || item.season;
+
+          return <a href={`/listview/${filter}/${itemValue}`}>{itemValue}</a>;
+        })
       }
     </section>
   </div>
