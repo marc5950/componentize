@@ -1,0 +1,61 @@
+---
+// pages/[listview].astro
+import Layout from "../layout/layout.astro";
+import {
+  getCategories,
+  getSubcategories,
+  getSeasons,
+  getProductsByCategory,
+  getProductsBySubcategory,
+  getProductsBySeason,
+} from "../utils/api.js";
+import CardSection from "../components/CardSection.astro";
+
+export async function getStaticPaths() {
+  const categories = await getCategories();
+  const subcategories = await getSubcategories();
+  const seasons = await getSeasons();
+
+  const categoryPaths = categories.map((category) => ({
+    params: { item: category.category, listview: "categories" },
+  }));
+
+  const subcategoryPaths = subcategories.map((subcategory) => ({
+    params: { item: subcategory.subcategory, listview: "subcategories" },
+  }));
+
+  const seasonPaths = seasons.map((season) => ({
+    params: { item: season.season, listview: "seasons" },
+  }));
+
+  return [...categoryPaths, ...subcategoryPaths, ...seasonPaths];
+}
+
+const { item } = Astro.params;
+const filter = Astro.url.searchParams.get("filter");
+
+let products = [];
+let title = "";
+
+if (filter === "categories") {
+  products = await getProductsByCategory(item);
+  title = item;
+} else if (filter === "subcategories") {
+  products = await getProductsBySubcategory(item);
+  title = item;
+} else if (filter === "seasons") {
+  products = await getProductsBySeason(item);
+  title = item;
+}
+
+console.log("underkategori:", products);
+console.log("filter:", filter);
+---
+
+<Layout titel={title}>
+  <h1>test</h1>
+  <h2>{title}</h2>
+  <div class="produktliste">
+    {products.map((product) => <CardSection product={product} />)}
+  </div>
+</Layout>

@@ -1,0 +1,49 @@
+---
+import Layout from "../layout/layout.astro";
+
+import { getCategories, getSubcategories, getSeasons } from "../utils/api.js";
+
+export async function getStaticPaths() {
+  const categories = await getCategories();
+  const subcategories = await getSubcategories();
+  const seasons = await getSeasons();
+
+  return [
+    { params: { filter: "categories" } },
+    { params: { filter: "subcategories" } },
+    { params: { filter: "seasons" } },
+  ];
+}
+
+const filter = Astro.params.filter;
+let items = [];
+let title = "";
+
+if (filter === "categories") {
+  items = await getCategories();
+  title = "Categories";
+} else if (filter === "subcategories") {
+  items = await getSubcategories();
+  title = "Subcategories";
+} else if (filter === "seasons") {
+  items = await getSeasons();
+  title = "Seasons";
+}
+---
+
+<Layout titel="FashionRUs">
+  <div class="katliste">
+    <h2>{title}</h2>
+    <section class="kategorier">
+      {
+        items.map((item) => (
+          <a
+            href={`/listview?filter=${filter}&item=${item.category || item.subcategory || item.season}`}
+          >
+            {item.category || item.subcategory || item.season}
+          </a>
+        ))
+      }
+    </section>
+  </div>
+</Layout>

@@ -1,42 +1,43 @@
 ---
-//@ts-nocheck
 import "../styles/global.css";
 const { product } = Astro.props;
+
 function onSale(pris, rabat) {
   if (rabat > 0) {
     return (pris * (1 - rabat / 100)).toFixed(2);
   }
-  return pris; // Hvis rabatten er 0, returnér den oprindelige pris
+  return pris;
 }
+
 let productSale = product.discount > 0 ? "onSale" : "normal";
 let productSoldOut = product.soldout ? "soldOut" : "";
 ---
 
 <article class={`produktkort ${productSale} ${productSoldOut}`}>
-  <a href={`/${product.id}`}>
+  <a href={`/product/${product.id}`}>
     <img
       src={`https://kea-alt-del.dk/t7/images/webp/640/${product.id}.webp`}
-      alt={product.productdisplayname}
+      alt={`Billede af ${product.productdisplayname}`}
     />
   </a>
   <p>
     <span>{product.brandname}</span>
-    <span style="filter: invert(30%)">{product.articletype}</span>
+    <span class="articletype">{product.articletype}</span>
   </p>
   <h3>{product.productdisplayname}</h3>
   <p class="nulldiscount">{product.price} kr</p>
-  <div class="discounted">
-    <p class="sale nyPris">{onSale(product.price, product.discount)} kr</p>
-    <p>
-      <span style="font-size: 12px">
-        Before: <span style="text-decoration: line-through"
-          >{product.price} kr</span
-        >
-      </span>
-      <span class="sale rabatProcent" style="font-size: 12px"
-        >Save -{product.discount}%</span
-      >
-    </p>
-  </div>
-  <a href={`/${product.id}`}>Read more</a>
+  {
+    product.discount > 0 && (
+      <div class="discounted">
+        <p class="sale nyPris">{onSale(product.price, product.discount)} kr</p>
+        <p class="rabatInfo">
+          <span>
+            Before: <span class="oldPrice">{product.price} kr</span>
+          </span>
+          <span class="rabatProcent">Save -{product.discount}%</span>
+        </p>
+      </div>
+    )
+  }
+  <a href={`/product/${product.id}`}>Read more</a>
 </article>
